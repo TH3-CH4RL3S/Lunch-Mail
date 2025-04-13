@@ -143,3 +143,7 @@ try:
         print("Email sent successfully.")
 except Exception as e:
     print("Failed to send email:", str(e))
+
+except Exception as e:
+    print(f"[LunchBot ERROR] {e}")
+    raise  # re-raise so cron sees it
