@@ -29,14 +29,30 @@
 
 Install dependencies with:
 
-### Windows
+### 🪟 Windows
 
 ```bash
 pip install openai requests beautifulsoup4 python-dotenv
 ```
 
-### Linux 🐧:
+## 🐧 Linux Setup Instructions
+
+Follow these steps to install dependencies and set up the LunchBot environment on a Linux system (e.g. Raspberry Pi):
+
+### 📦 1. Update & Upgrade the System
 
 ```bash
-sudo apt update && sudo apt upgrade -y && sudo apt install -y python3 python3-pip && pip3 install openai requests beautifulsoup4 python-dotenv
+sudo apt update && sudo apt upgrade -y
+```
+
+### 🐍 2. Install Python and Virtual Environment Tools
+```bash
+sudo apt install -y python3 python3-pip python3-venv
+```
+
+### ☁️ 3. Create and Activate a Virtual Environment
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install openai requests beautifulsoup4 python-dotenv
 ```
