@@ -10,6 +10,7 @@ from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.utils import formataddr
 
 # Load .env
 load_dotenv(find_dotenv())
@@ -43,9 +44,13 @@ if weekday >= 5:
 # Restaurant URLs to scrape
 # Add your restaurant URLs here
 restaurant_urls = [
-    "https://joans.se/restaurang/karlskoga/",
+    "https://joans.se/lunch/lunch-karlskoga/",
     "https://boforshotel.se/ata/veckans-luncher/",
-    "https://karlskogahotell.se/restaurang/veckans-lunch/",
+    "https://www.matochmat.se/lunch/karlskoga/karlskoga-hotell/",
+    "https://hotellalfrednobel.se/ata/lunch/",
+    "https://parltuppen.com/matsedel",
+    "https://restauranghugo.se/dagens-lunch/",
+    "https://www.matochmat.se/lunch/karlskoga/pacos-karlskoga/",
 ]
 
 # ------------------------
@@ -121,7 +126,7 @@ email_html = generate_lunch_email_html(client, menus_for_gpt)
 
 # Email message
 msg = MIMEMultipart("alternative")
-msg["From"] = EMAIL_SENDER
+msg["From"] = formataddr(("Lunch Bot 🤖", EMAIL_SENDER))
 msg["To"] = ", ".join(EMAIL_RECIPIENTS)
 msg["Subject"] = email_subject
 

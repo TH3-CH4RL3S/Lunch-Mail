@@ -29,5 +29,14 @@
 
 Install dependencies with:
 
+### Windows
+
 ```bash
 pip install openai requests beautifulsoup4 python-dotenv
+```
+
+### Linux 🐧:
+
+```bash
+sudo apt update && sudo apt upgrade -y && sudo apt install -y python3 python3-pip && pip3 install openai requests beautifulsoup4 python-dotenv
+```
