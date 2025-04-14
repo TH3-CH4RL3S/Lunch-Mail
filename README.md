@@ -56,3 +56,28 @@ python3 -m venv venv
 source venv/bin/activate
 pip install openai requests beautifulsoup4 python-dotenv
 ```
+
+---
+
+## 🔑 Setting Up the `.env` File
+
+The `.env` file is used to securely store sensitive information, such as API keys and email credentials, that the LunchBot script needs to run. This approach keeps your sensitive data out of the source code and ensures it is not accidentally shared or exposed.
+
+### Why You Need a `.env` File
+
+1. **API Key**: The script uses OpenAI's API to process and format the lunch menus. You need to provide your OpenAI API key.
+2. **Email Credentials**: LunchBot sends the formatted lunch menu via email. You need to provide your email account credentials (e.g., Gmail App Password) to enable this functionality.
+3. **Environment Variables**: Using a `.env` file allows you to easily manage and update these values without modifying the code.
+
+### How to Create and Configure the `.env` File
+
+1. Create a file named `.env` in the root directory of the project.
+2. Add the following variables to the file, replacing the placeholders with your actual values:
+
+```python
+OPENAI_API_KEY=your_openai_api_key_here
+EMAIL_SENDER=sender_email_address_here
+EMAIL_PASSWORD=your_email_app_password_here
+EMAIL_RECIPIENTS=list_of_recipients_email_adresses_here
+FORMS_LINK=your_forms_link_here
+```
