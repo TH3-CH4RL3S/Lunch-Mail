@@ -134,9 +134,8 @@ try:
     subject_text = f"Dagens Lunch - V.{target_week} {current_day}"
     msg = MIMEMultipart("alternative")
     msg["From"] = formataddr(("Lunch Bot 🤖", EMAIL_SENDER))
-    msg["To"] = ", ".join(EMAIL_RECIPIENTS)
+    msg["To"] = "Lunchgruppen"
     msg["Subject"] = Header(subject_text, "utf-8")
-
     email_html = generate_lunch_email_html(client, menus_for_gpt)
     msg.attach(MIMEText("Se lunchmenyn i HTML-versionen av mejlet.", "plain"))
     msg.attach(MIMEText(email_html, "html"))
