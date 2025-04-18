@@ -12,6 +12,7 @@
 - 💸 Extracts or mentions **lunch price and serving time**
 - 📬 Sends a formatted HTML email with a friendly greeting and a funny Lunch Bot signature
 - 💾 Caches websites to avoid reprocessing
+- 📅 Skips sending emails on **Swedish public holidays** using the `holidays` package
 - 📅 Configured for testing: simulates **Monday of next week** if script is run on a weekend
 
 ---
@@ -26,16 +27,17 @@
   - `requests`
   - `beautifulsoup4`
   - `python-dotenv`
+  - `holidays`
 
 Install dependencies with:
 
 ### 🪟 Windows
 
 ```bash
-pip install openai requests beautifulsoup4 python-dotenv
+pip install openai requests beautifulsoup4 python-dotenv holidays
 ```
 
-## 🐧 Linux Setup Instructions
+### 🐧 Linux Setup Instructions
 
 Follow these steps to install dependencies and set up the LunchBot environment on a Linux system (e.g. Raspberry Pi):
 
@@ -54,7 +56,7 @@ sudo apt install -y python3 python3-pip python3-venv
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install openai requests beautifulsoup4 python-dotenv
+pip install openai requests beautifulsoup4 python-dotenv holidays
 ```
 
 ---
