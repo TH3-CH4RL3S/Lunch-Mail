@@ -82,4 +82,5 @@ EMAIL_SENDER=sender_email_address_here
 EMAIL_PASSWORD=your_email_app_password_here
 EMAIL_RECIPIENTS=list_of_recipients_email_adresses_here
 FORMS_LINK=your_forms_link_here
+DEBUG=true/false
 ```
