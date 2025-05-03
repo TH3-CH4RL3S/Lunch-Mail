@@ -61,7 +61,7 @@ try:
 
         if weekday >= 5 or DEBUG:
             next_monday = today + timedelta(days=(7 - weekday))
-            current_day = "Onsdag"
+            current_day = "Torsdag"
             target_week = next_monday.isocalendar().week
 
         # Hämta väderdata
@@ -69,7 +69,7 @@ try:
             lat, lon = get_coordinates("Karlskoga") # Hämta latitud och longitud för en stad, exempelvis: Karlskoga
             temperature, wsymb_code, time = get_weather_from_smhi(lat, lon)
             weather_description = describe_weather_code(wsymb_code)
-            weather_intro = f"📍 Vädret i Karlskoga just nu: {round(temperature)}°C och {weather_description}.\n"
+            weather_intro = f"Vädret i Karlskoga är just nu: {round(temperature)}°C och {weather_description}.\n"
 
         except Exception as e:
             weather_intro = "📍 Väderinformationen kunde inte hämtas just nu.\n\n"
@@ -113,18 +113,41 @@ try:
                 "     - Använd tydliga marginaler och padding för att separera sektioner.\n"
                 "     - Gör texten responsiv så att den ser bra ut på både dator och mobil.\n"
                 "     - Använd ett sans-serif-typsnitt som Arial eller Helvetica.\n\n"
-                "4. **Avslutning**:\n"
+                "4. **Lunchmysterium**:\n"
+                "   - Generera ett nytt, kort och klurigt mysterium, gåta, rebus eller mattefråga som engagerar mottagarna.\n"
+                "   - Använd emojis för att göra mysteriet mer visuellt tilltalande.\n"
+                "   - Generera även ett svar till mysteriet.\n"
+                "   - Placera mysteriet i en separat sektion tidigt i mejlet, t.ex. direkt efter hälsningsfrasen.\n"
+                "   - Använd en rubrik för sektionen, t.ex. '🕵️ Dagens Lunchmysterium'.\n"
+                "   - Gör mysteriet visuellt tilltalande med en ljus bakgrundsfärg (#f9f9f9), lite marginal och en tunn ram (#ddd).\n"
+                "   - Lägg till en diskret textrad under mysteriet som informerar läsaren att svaret finns i mejlets fotnot.\n"
+                "   - Placera svaret i slutet av mejlet i fotnoten som kommer att beskrivas snart\n"
+                "   - Använd följande HTML-struktur för mysteriet:\n"
+                "     <div style='margin-top: 20px; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd;'>\n"
+                "         <h3 style='color: #007bff;'>🕵️ Dagens Lunchmysterium</h3>\n"
+                "         <p style='font-size: 1em; color: #333;'>[Mysteriet här]</p>\n"
+                "         <p style='font-size: 0.85em; color: #999; font-style: italic;'>Psst! Svaret hittar du längst ner i mejlet.</p>\n"
+                "     </div>\n"
+
+                "5. **Avslutning**:\n"
                 "   - Lägg till en signatur från Lunch Bot 🤖. Variera gärna stilen varje gång.\n"
                 "   - Lägg till denna rad längst ner:\n"
                 f"     <p style='font-size: 0.9em; text-align: center;'>Saknar du din favoritrestaurang? <a href='{FORMS_LINK}' target='_blank' style='color:#007bff;'>Tipsa Lunch-Bot Här!</a></p>\n\n"
-                "5. **Fotnot**:\n"
-                "   - Lägg till en fotnot med information om att mejlet är automatiskt genererat och länkar till OpenAI och SMHI:\n"
+                "6. **Fotnot**:\n"
+                "   - Lägg till en avslutande fotnot med:\n"
+                "     - Information om att mejlet är automatiskt genererat.\n"
+                "     - Länkar till OpenAI och SMHI.\n"
+                "     - Svaret på dagens lunchmysterium i diskret stil.\n"
+                "     - Använd följande HTML-struktur:\n"
                 "     <hr style='margin-top: 2em; margin-bottom: 0.5em;'>\n"
-                "     <p style='font-size: 0.75em; text-align: center; color: #888;'>"
-                "     * Detta utskick är automatiskt genererat av Lunch Bot med hjälp av "
-                "     <a href='https://openai.com' target='_blank' style='color: #888;'>OpenAI</a> "
-                "     och väderdata från <a href='https://opendata.smhi.se' target='_blank' style='color: #888;'>SMHI</a>."
-                "     </p>\n\n"
+                "     <p style='font-size: 0.85em; color: #999; font-style: italic;'>Svar på dagens mysterium: [Svaret här]</p>\n"
+                "     <p style='font-size: 0.75em; text-align: center; color: #888;'>\n"
+                "         * Detta utskick är automatiskt genererat av Lunch Bot med hjälp av\n"
+                "         <a href='https://openai.com' target='_blank' style='color: #888;'>OpenAI</a>\n"
+                "         och väderdata från\n"
+                "         <a href='https://opendata.smhi.se' target='_blank' style='color: #888;'>SMHI</a>.\n"
+                "     </p>\n"
+
                 "Här är menyerna:\n\n"
             )
 
@@ -138,7 +161,7 @@ try:
             response = client.chat.completions.create(
                 model="gpt-4.1",
                 messages=[
-                    {"role": "system", "content": "Du är en assistent som skriver stilrena HTML-CSS-e-postmeddelanden med lunchmenyer."},
+                    {"role": "system", "content": "Du är en assistent som skriver stilrena HTML-CSS-e-postmeddelanden med lunchmenyer och mysterier."},
                     {"role": "user", "content": full_prompt}
                 ]
             )
