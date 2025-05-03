@@ -61,7 +61,7 @@ try:
 
         if weekday >= 5 or DEBUG:
             next_monday = today + timedelta(days=(7 - weekday))
-            current_day = "Torsdag"
+            current_day = "Måndag"
             target_week = next_monday.isocalendar().week
 
         # Hämta väderdata
@@ -140,7 +140,7 @@ try:
                 "     - Svaret på dagens lunchmysterium i diskret stil.\n"
                 "     - Använd följande HTML-struktur:\n"
                 "     <hr style='margin-top: 2em; margin-bottom: 0.5em;'>\n"
-                "     <p style='font-size: 0.85em; color: #999; font-style: italic;'>Svar på dagens mysterium: [Svaret här]</p>\n"
+                "     <p style='font-size: 0.85em; text-align: center; color: #999; font-style: italic;'>Svar på dagens mysterium: [Svaret här]</p>\n"
                 "     <p style='font-size: 0.75em; text-align: center; color: #888;'>\n"
                 "         * Detta utskick är automatiskt genererat av Lunch Bot med hjälp av\n"
                 "         <a href='https://openai.com' target='_blank' style='color: #888;'>OpenAI</a>\n"
