@@ -61,7 +61,7 @@ try:
 
         if weekday >= 5 or DEBUG:
             next_monday = today + timedelta(days=(7 - weekday))
-            current_day = "Tisdag"
+            current_day = "Onsdag"
             target_week = next_monday.isocalendar().week
 
         # Hämta väderdata
@@ -90,35 +90,41 @@ try:
         # ------------------------
         def generate_lunch_email_html(client, menus):
             prompt_intro = (
-                f"Du är en assistent som skickar ett dagligt lunchmejl till kollegor i HTML-format. "
-                f"I varje menytext ska du endast visa lunchmenyn för {current_day} i vecka {target_week}. "
-                "Om hemsidan anger lunch för flera veckor, se till att du väljer rätt vecka baserat på numret.\n\n"
-                "För varje restaurang som nämns nedan ska du:\n"
-                "- Skapa en rubrik med restaurangens namn som klickbar länk till hemsidan (<a href=\"...\">...<a>)\n"
-                "- Lista dagens lunchrätter i punktform\n"
-                "- Visa öppettider och pris om det finns\n"
-                "- Om öppettider eller pris saknas, skriv något som 'se hemsidan för tider och priser.'\n"
-                "- Lägg till en karta-länk med 📍-emoji som leder till Google Maps med restaurangens namn\n"
-                "- Använd denna format för karta-länken:\n"
-                "<p>📍 <a href='https://www.google.com/maps/search/RESTAURANGENS NAMN'>Visa på karta</a></p>\n"
-                "- Använd HTML-taggar som <h2>, <h3>, <ul>, <li>, <p>, <em>, <a> för struktur\n"
-                "- Lägg till en passande emoji i början av varje rätt som symboliserar vad det är (t.ex. 🐟, 🥩, 🌱)\n"
-                "- Lägg till inbäddad CSS för enkel och professionell styling som fungerar i e-postklienter.\n\n"
-                f"{weather_intro}"
-                f"Använd väderinformationen i mejlets inledning för att skapa en personlig och trevlig hälsning. "
-                f"Till exempel kan du föreslå att man sitter ute om det är soligt, eller rekommendera något varmt om det är kallt. "
-                f"Var gärna lite humoristisk eller fyndig beroende på vädret.\n\n"
-                "Inledningen (hälsning + väder) ska presenteras i en större stil än övrig text - t.ex. genom att använda en <div> med <strong> eller ökad fontstorlek (16–18px). "
-                "Syftet är att skapa en varm och tydlig start på mejlet.\n\n"
-                "Avsluta mejlet med en signatur från Lunch Bot 🤖 - byt gärna stil varje gång.\n\n"
-                f"Avsluta allra sist med denna rad, med en fungerande HTML-länk:\n"
-                f"<p style='font-size: 0.9em; text-align: center;'>Saknar du din favoritrestaurang? <a href='{FORMS_LINK}' target='_blank' style='color:#007bff;'>Tipsa Lunch-Bot Här!</a></p>\n\n"
-                "<hr style='margin-top: 2em; margin-bottom: 0.5em;'>\n"
-                "<p style='font-size: 0.75em; text-align: center; color: #888;'>"
-                "* Detta utskick är automatiskt genererat av Lunch Bot med hjälp av "
-                "<a href='https://openai.com' target='_blank' style='color: #888;'>OpenAI</a> "
-                "och väderdata från <a href='https://opendata.smhi.se' target='_blank' style='color: #888;'>SMHI</a>."
-                "</p>\n"
+                f"Du är en assistent som skapar ett dagligt lunchmejl i HTML-format. "
+                f"Mejlet ska vara stilrent, professionellt och anpassat för e-postklienter. "
+                f"Visa endast lunchmenyn för {current_day} i vecka {target_week}. "
+                "Om hemsidan anger lunch för flera veckor, välj rätt vecka baserat på numret.\n\n"
+                "Följ dessa instruktioner för att skapa ett professionellt mejl:\n\n"
+                "1. **Inledning**:\n"
+                "   - Skapa en personlig hälsning baserad på vädret:\n"
+                f"     - Använd väderinformationen: '{weather_intro}'\n"
+                "     - Gör hälsningen tydlig med större textstorlek (18px) och en vänlig ton.\n"
+                "     - Placera hälsningen i en separat sektion med en ljus bakgrundsfärg (#f0f8ff) och en tunn ram (#dcdcdc).\n\n"
+                "2. **För varje restaurang**:\n"
+                "   - Skapa en rubrik med restaurangens namn som en klickbar länk till hemsidan (<a href=\"...\">...<a>).\n"
+                "   - Lista dagens lunchrätter i punktform med passande emojis (t.ex. 🐟 för fisk, 🥩 för kött, 🌱 för vegetariskt).\n"
+                "   - Visa öppettider och priser om tillgängligt. Om inte, skriv 'Se hemsidan för tider och priser.'\n"
+                "   - Lägg till en karta-länk med 📍-emoji som leder till Google Maps (format: <a href='https://www.google.com/maps/search/RESTAURANGENS NAMN'>Visa på karta</a>).\n"
+                "   - Separera varje restaurang med en tunn horisontell linje (<hr style='border: 1px solid #ddd;'>).\n\n"
+                "3. **Design och layout**:\n"
+                "   - Använd inbäddad CSS för att skapa en professionell design:\n"
+                "     - Ljus bakgrundsfärg (#ffffff) och mörk textfärg (#333).\n"
+                "     - Rubriker ska ha en blå färg (#007bff) och vara centrerade.\n"
+                "     - Använd tydliga marginaler och padding för att separera sektioner.\n"
+                "     - Gör texten responsiv så att den ser bra ut på både dator och mobil.\n"
+                "     - Använd ett sans-serif-typsnitt som Arial eller Helvetica.\n\n"
+                "4. **Avslutning**:\n"
+                "   - Lägg till en signatur från Lunch Bot 🤖. Variera gärna stilen varje gång.\n"
+                "   - Lägg till denna rad längst ner:\n"
+                f"     <p style='font-size: 0.9em; text-align: center;'>Saknar du din favoritrestaurang? <a href='{FORMS_LINK}' target='_blank' style='color:#007bff;'>Tipsa Lunch-Bot Här!</a></p>\n\n"
+                "5. **Fotnot**:\n"
+                "   - Lägg till en fotnot med information om att mejlet är automatiskt genererat och länkar till OpenAI och SMHI:\n"
+                "     <hr style='margin-top: 2em; margin-bottom: 0.5em;'>\n"
+                "     <p style='font-size: 0.75em; text-align: center; color: #888;'>"
+                "     * Detta utskick är automatiskt genererat av Lunch Bot med hjälp av "
+                "     <a href='https://openai.com' target='_blank' style='color: #888;'>OpenAI</a> "
+                "     och väderdata från <a href='https://opendata.smhi.se' target='_blank' style='color: #888;'>SMHI</a>."
+                "     </p>\n\n"
                 "Här är menyerna:\n\n"
             )
 
@@ -130,7 +136,7 @@ try:
             full_prompt = prompt_intro + menu_texts + "\nSvara endast med HTML och inbäddad CSS-utdata."
 
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4.1",
                 messages=[
                     {"role": "system", "content": "Du är en assistent som skriver stilrena HTML-CSS-e-postmeddelanden med lunchmenyer."},
                     {"role": "user", "content": full_prompt}
