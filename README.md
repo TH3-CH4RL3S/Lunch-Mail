@@ -1,19 +1,19 @@
 # 🍽️ LunchBot – Daily Restaurant Lunch Emailer
 
-**LunchBot** is a Python-based tool that automatically fetches daily lunch menus from restaurant websites, uses OpenAI's GPT-4o-mini model to extract and format them beautifully in HTML, and emails the result to a group of recipients.
+**LunchBot** is a powerful Python-based automation tool designed to simplify and enhance your lunch planning experience. It automatically fetches daily lunch menus from restaurant websites, processes them using OpenAI's GPT models (tested with versions as low as GPT-4o-mini), and delivers beautifully formatted HTML emails to your inbox. Whether you're coordinating lunch for a team or just want to stay informed, LunchBot ensures you never miss a delicious meal.
 
 ---
 
 ## 🚀 Features
 
-- ✅ Fetches menus from one or more restaurant websites
-- 🤖 Uses GPT to extract **only today's lunch**, even if the full week's menu is listed
-- 🕵️ Validates correct **week number** (even if testing on a Sunday!)
-- 💸 Extracts or mentions **lunch price and serving time**
-- 📬 Sends a formatted HTML email with a friendly greeting and a funny Lunch Bot signature
-- 💾 Caches websites to avoid reprocessing
-- 📅 Skips sending emails on **Swedish public holidays** using the `holidays` package
-- 📅 Configured for testing: simulates **Monday of next week** if script is run on a weekend
+- ✅ Fetches menus from one or more restaurant websites  
+- 🤖 Uses GPT to extract **only today's lunch**, even if the full week's menu is listed  
+- 💸 Extracts and mentions **lunch price and serving time**  
+- 📬 Sends a formatted HTML email with a friendly greeting and inbedded CSS  
+- 🕵️ **Lunchmysterium**: Includes a daily riddle, rebus, or math puzzle to engage recipients  
+- ⏰ Perfect for **automated daily scheduling** using `cron` — set it and forget it!
+- 💾 Caches websites to avoid reprocessing  
+- 📅 Skips sending emails on **Swedish public holidays** using the `holidays` package  
 
 ---
 
@@ -84,3 +84,141 @@ EMAIL_RECIPIENTS=list_of_recipients_email_adresses_here
 FORMS_LINK=your_forms_link_here
 DEBUG=true/false
 ```
+
+---
+
+## 🕒 Automating LunchBot with `cron` (Linux / Raspberry Pi)
+
+This section explains how to automatically run LunchBot on a **Linux-based system**, such as a **Raspberry Pi**, using `cron` — the built-in task scheduler. This allows LunchBot to run at a specific time every day without any manual intervention.
+
+We use a shell script called `run_task.sh` to manage environment setup, logging, and shutting down the Pi after the task completes.
+
+---
+
+### 🔧 What is `run_task.sh`?
+
+The `run_task.sh` script:
+
+- ✅ Activates the virtual environment for the LunchBot project.
+- ✅ Executes the Python script to fetch, parse, and email the lunch menu.
+- ✅ Logs both standard output and errors to timestamped log files.
+- ✅ Sends an email with the error log if anything goes wrong.
+- ✅ Shuts down the Raspberry Pi afterward to save energy.
+
+This script handles all the behind-the-scenes logic and ensures errors are logged and notified properly.
+
+---
+
+### 📅 How to Schedule LunchBot with `cron`
+
+#### 1. Open the crontab editor (in the terminal)
+
+```bash
+crontab -e
+```
+
+The first time you do this, it may ask you to choose an editor — select nano for simplicity.
+
+#### 2. Add this line to run the script Monday–Friday at 11:00 AM:
+```bash
+0 11 * * 1-5 /home/pi/Lunch-Mail/run_task.sh
+```
+**Replace** ***/home/pi/LunchBot/*** with the actual path to your LunchBot project if it's different.
+
+#### 3. Save and exit:
+- In nano, press ***Ctrl + O*** to save.
+
+- Then press ***Enter*** to confirm.
+
+- Finally, press ***Ctrl + X*** to exit the editor.
+
+
+#### 4. Cron Security & Best Practices
+
+- **Ensure your `run_task.sh` is executable:**
+  
+  ```bash
+  chmod +x /home/pi/Lunch-Mail/run_task.sh
+  ```
+
+- Your Pi will shut down after sending the email, so make sure it is powered back on each morning.
+
+- You can use a smart plug with scheduled power cycles to get the full automation experience.
+
+- Or manually turn it on each day, depending on your use case.
+
+#### 5. Test your setup manually: 
+Before relying on the automatic schedule, run the task manually to confirm that everything works:
+```bash
+bash /home/pi/Lunch-Mail/run_task.sh
+```
+Check the **cron.log**, **output_*.log**, and **error_*.log** files for results. You should receive the email and see no errors in the logs.
+
+#### 6. Done! LunchBot is now scheduled and running:
+You're all set! LunchBot will now automatically run every weekday at the time you specified, fetch the latest lunch menus, send them via email, and then shut down your server🎉
+
+### ℹ️ Need more help with cron syntax?
+Check out [crontab.guru](https://crontab.guru) — a helpful site for building and understanding cron schedules.
+
+---
+
+## ✉️ Setting Up Email on Linux / Raspberry Pi (for Notifications)
+
+LunchBot uses your Raspberry Pi to send emails, including the formatted lunch menu and any error logs. To make this work reliably, you'll configure the Pi to send email via a real mail server (like Gmail) using a lightweight tool called `msmtp`.
+
+---
+
+### 🔧 1. Install msmtp and mail tools:
+
+In the terminal, run:
+
+```bash
+sudo apt update
+sudo apt install msmtp msmtp-mta mailutils
+```
+This installs the tools required to send email from the command line.
+
+### 📄 2. Create the ~/.msmtprc configuration file:
+Run:
+```bash
+nano ~/.msmtprc
+```
+
+Paste the following configuration, replacing the placeholders with your own Gmail info:
+```ini
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+account        gmail
+host           smtp.gmail.com
+port           587
+from           your_email@gmail.com
+user           your_email@gmail.com
+password       your_app_password_here
+
+account default : gmail
+```
+🔐 **Important:** You must use a [Gmail App Password](https://support.google.com/accounts/answer/185833) — not your normal password.
+
+### 🔒 3. Secure the email config file:
+```bash
+chmod 600 ~/.msmtprc
+```
+
+### ✅ 4. Test email sending:
+Send a test email:
+```bash
+echo "This is a test email from my Raspberry Pi" | mail -s "Test Email" your_email@gmail.com
+```
+Check your inbox. If the message arrives, you're good to go!
+
+### 🪵 5. Check logs if it fails:
+If no email arrives, check the log:
+```bash
+cat ~/.msmtp.log
+```
+
+📧 Once email is working, LunchBot can notify you of errors, send daily menus, and shut down automatically with confidence.
